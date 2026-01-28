@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const mongodbURL = process.env.MONGO_URI;
 if (!mongodbURL) {
-    throw new Error("There is an error in Db")
+    throw new Error("MONGO_URI environment variable is not set")
 }
 
 let cache = global.mongoose

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Bike, User, UserCog } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const roles = [
   { id: "admin", label: "Admin", icon: UserCog },
@@ -18,6 +19,7 @@ const EditRoleMobile = () => {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [mobileNumber, setMobileNumber] = useState("");
   const [loading, setLoading] = useState(false);
+  const {update}=useSession()
 
   const isEnabled = !!selectedRole && mobileNumber.length === 10;
 
@@ -31,10 +33,10 @@ const EditRoleMobile = () => {
         role: selectedRole,
         mobileNumber,
       });
+      await update({ role: selectedRole });
 
-      // ✅ REDIRECT TO HOME
       router.replace("/");
-      router.refresh(); // ✅ refresh session + DB
+      router.refresh(); 
     } catch (error) {
       console.error("Frontend error:", error);
     } finally {
@@ -97,7 +99,7 @@ const EditRoleMobile = () => {
             : "bg-gray-300 text-gray-500 cursor-not-allowed"
         }`}
       >
-        {loading ? "Saving..." : "Submit"}
+        {loading ? "Saving..." : "Go To Home"}
       </button>
     </div>
   );
